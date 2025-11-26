@@ -6,24 +6,25 @@ const products = [
       id: 1,
       name: "Finger Tape 0,5 cm x 13 m",
       price: 4990,
-      image: "https://via.placeholder.com/400x250?text=Finger+Tape",
+      image: "img/finger.jpg",
       description: "Ideal para dedos, sujeción firme y cómoda para deportistas."
     },
     {
       id: 2,
       name: "Tape rígido 5 cm x 5 m",
       price: 5990,
-      image: "https://via.placeholder.com/400x250?text=Tape+Rigido",
-      description: "Perfecto para tobillos y rodillas. Soporte máximo en competencia."
+      image: "img/tape.jpg",
+      description: "Perfecto para tobillos y rodillas. Soporte máximo en entrenamientos."
     },
     {
       id: 3,
       name: "Venda elástica tipo Coban",
       price: 3990,
-      image: "https://via.placeholder.com/400x250?text=Coban",
-      description: "Autoadherente, no se pega a la piel. Versátil para múltiples deportes."
+      image: "img/coban.jpg",
+      description: "Venda autoadherente que no se pega a la piel. Muy utilizada en fútbol."
     }
   ];
+  
   
   // ------- Carrito en localStorage -------
   function getCart() {
