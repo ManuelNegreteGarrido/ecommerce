@@ -1,12 +1,12 @@
-// js/app.js
-
-// Productos base (puedes ajustar nombres y precios reales de vendate.cl)
+// -----------------------------
+// Productos vendate.cl
+// -----------------------------
 const products = [
     {
       id: 1,
       name: "Finger Tape 0,5 cm x 13 m",
       price: 4990,
-      image: "img/finger.jpg",
+      image: "img/finger.jpg", // asegúrate que el archivo exista
       description: "Ideal para dedos, sujeción firme y cómoda para deportistas."
     },
     {
@@ -14,19 +14,20 @@ const products = [
       name: "Tape rígido 5 cm x 5 m",
       price: 5990,
       image: "img/tape.jpg",
-      description: "Perfecto para tobillos y rodillas. Soporte máximo en entrenamientos."
+      description: "Perfecto para tobillos y rodillas. Soporte máximo en entrenamientos y partidos."
     },
     {
       id: 3,
       name: "Venda elástica tipo Coban",
       price: 3990,
       image: "img/coban.jpg",
-      description: "Venda autoadherente que no se pega a la piel. Muy utilizada en fútbol."
+      description: "Venda autoadherente que no se pega a la piel. Muy utilizada en fútbol profesional."
     }
   ];
   
-  
-  // ------- Carrito en localStorage -------
+  // -----------------------------
+  // Funciones de carrito (localStorage)
+  // -----------------------------
   function getCart() {
     const cart = localStorage.getItem("cart");
     return cart ? JSON.parse(cart) : [];
@@ -39,8 +40,23 @@ const products = [
   
   function addToCart(productId) {
     const cart = getCart();
-    cart.push(productId);
+    cart.push(productId); // guardamos solo IDs
     saveCart(cart);
+  }
+  
+  function removeOneFromCart(productId) {
+    const cart = getCart();
+    const index = cart.indexOf(productId);
+    if (index !== -1) {
+      cart.splice(index, 1); // elimina una unidad de ese producto
+      saveCart(cart);
+    }
+  }
+  
+  function clearCart() {
+    localStorage.removeItem("cart");
+    updateCartCount();
+    renderCart();
   }
   
   function updateCartCount() {
@@ -50,7 +66,9 @@ const products = [
     badge.textContent = cart.length;
   }
   
-  // ------- Home: grilla de productos -------
+  // -----------------------------
+  // Home: grilla de productos
+  // -----------------------------
   function renderProductList() {
     const listContainer = document.querySelector("#product-list");
     if (!listContainer) return;
@@ -80,6 +98,7 @@ const products = [
       listContainer.appendChild(col);
     });
   
+    // Delegación de eventos para los botones "Agregar al carrito"
     listContainer.addEventListener("click", (event) => {
       const button = event.target.closest("button[data-add]");
       if (!button) return;
@@ -88,7 +107,9 @@ const products = [
     });
   }
   
-  // ------- Detalle de producto -------
+  // -----------------------------
+  // Detalle de producto
+  // -----------------------------
   function renderProductDetail() {
     const detailContainer = document.querySelector("#product-detail");
     if (!detailContainer) return;
@@ -120,7 +141,9 @@ const products = [
     });
   }
   
-  // ------- Carrito -------
+  // -----------------------------
+  // Carrito
+  // -----------------------------
   function renderCart() {
     const cartContainer = document.querySelector("#cart-items");
     const summaryContainer = document.querySelector("#cart-summary");
@@ -138,6 +161,7 @@ const products = [
       return;
     }
   
+    // Contar cuántas unidades hay de cada producto
     const itemsMap = {};
     cart.forEach(id => {
       itemsMap[id] = (itemsMap[id] || 0) + 1;
@@ -155,19 +179,28 @@ const products = [
       total += subtotal;
   
       const row = document.createElement("article");
-      row.className = "border rounded p-3 mb-3 d-flex justify-content-between align-items-center";
+      row.className = "card mb-3 shadow-sm";
   
       row.innerHTML = `
-        <div>
-          <h2 class="h6 mb-1">${product.name}</h2>
-          <p class="mb-0 small text-muted">
-            Cantidad: ${quantity} · Precio unitario: $${product.price.toLocaleString("es-CL")}
-          </p>
-        </div>
-        <div class="fw-bold">
-          $${subtotal.toLocaleString("es-CL")}
+        <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+          <div class="d-flex align-items-center gap-3">
+            <img src="${product.image}" alt="${product.name}" class="rounded" style="width:70px; height:70px; object-fit:cover;">
+            <div>
+              <h2 class="h6 mb-1">${product.name}</h2>
+              <p class="mb-0 small text-muted">Precio unitario: $${product.price.toLocaleString("es-CL")}</p>
+              <p class="mb-0 small text-muted">Cantidad: ${quantity}</p>
+            </div>
+          </div>
+  
+          <div class="d-flex flex-column align-items-end gap-2">
+            <span class="fw-bold">Subtotal: $${subtotal.toLocaleString("es-CL")}</span>
+            <button class="btn btn-sm btn-outline-danger" data-remove="${product.id}">
+              Eliminar uno
+            </button>
+          </div>
         </div>
       `;
+  
       cartContainer.appendChild(row);
     });
   
@@ -179,13 +212,31 @@ const products = [
         </div>
       </div>
     `;
+  
+    // Listener para botones "Eliminar uno"
+    cartContainer.onclick = (event) => {
+      const btn = event.target.closest("[data-remove]");
+      if (!btn) return;
+      const id = Number(btn.getAttribute("data-remove"));
+      removeOneFromCart(id);
+      renderCart();
+    };
   }
   
-  // ------- Inicialización -------
+  // -----------------------------
+  // Inicialización
+  // -----------------------------
   document.addEventListener("DOMContentLoaded", () => {
     updateCartCount();
     renderProductList();
     renderProductDetail();
     renderCart();
+  
+    const clearBtn = document.querySelector("#btn-clear-cart");
+    if (clearBtn) {
+      clearBtn.addEventListener("click", () => {
+        clearCart();
+      });
+    }
   });
   

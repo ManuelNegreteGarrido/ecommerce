@@ -43,16 +43,29 @@
     <section class="container">
       <header class="mb-4">
         <h1 class="h3">Tu carrito</h1>
-        <p class="text-muted">Carrito simulado para el módulo de E-commerce (Frontend).</p>
+        <p class="text-muted">
+          Revisa tus productos, ajusta cantidades o elimina lo que no necesites antes de continuar.
+        </p>
       </header>
 
-      <section id="cart-items">
+      <!-- LISTA DE PRODUCTOS -->
+      <section id="cart-items" class="mb-4">
         <!-- JS lista los productos -->
       </section>
 
-      <section class="mt-4" id="cart-summary">
+      <!-- RESUMEN Y ACCIONES -->
+      <section id="cart-summary" class="mb-3">
         <!-- JS muestra total -->
       </section>
+
+      <div class="d-flex justify-content-between flex-column flex-md-row gap-2">
+        <a href="index.html" class="btn btn-outline-secondary w-100 w-md-auto">
+          ⬅ Seguir comprando
+        </a>
+        <button class="btn btn-outline-danger w-100 w-md-auto" id="btn-clear-cart">
+          🗑 Vaciar carrito
+        </button>
+      </div>
     </section>
   </main>
 
